@@ -20,13 +20,14 @@ class App extends React.Component {
       todos:[...this.state.todos, obj],
       value:''
     })
-  // delete_todo =(index)=>{
-  //   this.state.todos.splice(index,1)
-  //   this.setState({
-  //     todos:this.state.todos
-  //   })
-  // }
 }
+  delete_todo =(index)=>{
+    this.state.todos.splice(index,1)
+    this.setState({
+      todos:this.state.todos
+    })
+  }
+
 render(){
   let {todos,value} = this.state;
   return (
@@ -38,7 +39,7 @@ render(){
         {todos.map((v, i) => {
           return (
             <li key={i}>{v.title}
-            {/* <button onClick={()=>this.delete_todo(i)}>Delete Todo</button> */}
+            <button onClick={()=>this.delete_todo(i)}>Delete Todo</button>
             </li>
           )
         })}

@@ -27,6 +27,25 @@ class App extends React.Component {
       todos:this.state.todos
     })
   }
+  handleChange = (e,index)=>{
+    this.state.todos[index].title = e.target.value
+    this.setState({
+      todos:this.state.todos
+    })
+  }
+  edit_todo = (index, val)=>{
+    this.state.todos[index].edit = true;
+    this.setState({
+      todos:this.state.todos 
+    })
+
+  }
+  update = (index)=>{
+    this.state.todos[index].edit = false;
+    this.setState({
+      todos:this.state.todos 
+    })
+  }
 
 render(){
   let {todos,value} = this.state;
@@ -38,7 +57,12 @@ render(){
        
         {todos.map((v, i) => {
           return (
-            <li key={i}>{v.title}
+            <li key={i}>
+            {v.edit ? <input value={v.title} type='text' onChange={(e)=>this.handleChange(e, i)} /> : v.title}
+            {v.edit ? <button onClick={()=>this.update(i)}>Update</button>
+            :
+            <button onClick={()=>this.edit_todo(i, v.title)}>Edit Todo</button>
+            }
             <button onClick={()=>this.delete_todo(i)}>Delete Todo</button>
             </li>
           )

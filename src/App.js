@@ -15,7 +15,7 @@ class App extends React.Component {
   }
   add_todo =()=>{
     let obj={title: this.state.value, edit:false}
-    // firebase.database().ref('todos').push(obj)
+    firebase.database().ref('todos').push(obj)
     this.setState({
       todos:[...this.state.todos, obj],
       value:''
@@ -47,27 +47,42 @@ class App extends React.Component {
     })
   }
 
+componentDidMount(){
+  firebase.database().ref('todos').on('value', (snapshot)=>{
+    //console.log(snapshot.val())
+
+                  const todos = []
+                  snapshot.forEach(doc =>{
+                    const data = doc.val()
+                    todos.push(data)
+                  })
+                  this.setState({todos:todos})
+                })
+             
+}
+
 render(){
   let {todos,value} = this.state;
   return (
     <>
+    <div className='main_div'>
       <input value={value} onChange={(e) => this.setState({ value: e.target.value })} type='text' placeholder='enter your todo' />
+      <br/>
+     
       <button onClick={this.add_todo}>Add Item</button>
-      <ul>
-       
-        {todos.map((v, i) => {
-          return (
-            <li key={i}>
-            {v.edit ? <input value={v.title} type='text' onChange={(e)=>this.handleChange(e, i)} /> : v.title}
-            {v.edit ? <button onClick={()=>this.update(i)}>Update</button>
-            :
-            <button onClick={()=>this.edit_todo(i, v.title)}>Edit Todo</button>
-            }
-            <button onClick={()=>this.delete_todo(i)}>Delete Todo</button>
-            </li>
-          )
-        })}
-      </ul>
+      </div>
+      {this.state.todos &&
+      this.state.todos.map((v,i)=>{
+        return(
+          <div className='list' >
+          <ul>
+            <li key={i}>{v.title}</li>
+          </ul>
+          </div>
+        )
+      })
+      }
+ 
     </>
   )
 }

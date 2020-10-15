@@ -2,7 +2,7 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import firebase from './Firebase'
 import "./App.css";
-
+import Todos from '../src/components/Todos'
 
 
 class App extends React.Component {
@@ -69,21 +69,22 @@ render(){
       <input value={value} onChange={(e) => this.setState({ value: e.target.value })} type='text' placeholder='enter your todo' />
       <br/>
      
-      <button onClick={this.add_todo}>Add Item</button>
-      </div>
+      <button className='btn-success' disabled={!value} onClick={this.add_todo}>Add Item</button>
+      </div> 
       {this.state.todos &&
       this.state.todos.map((v,i)=>{
         return(
           <div className='list' >
           <ul>
-            <li key={i}>{v.title}</li>
+            <Todos text={<li key={i}>{v.title}</li>}/>
+           
           </ul>
           </div>
         )
       })
       }
- 
-    </>
+     </>
+
   )
 }
 
